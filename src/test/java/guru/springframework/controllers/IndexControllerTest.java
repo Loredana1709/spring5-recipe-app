@@ -20,9 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+/**
+ * Created by jt on 6/17/17.
+ */
 public class IndexControllerTest {
-
-    IndexController controller;
 
     @Mock
     RecipeService recipeService;
@@ -30,8 +31,10 @@ public class IndexControllerTest {
     @Mock
     Model model;
 
+    IndexController controller;
+
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         controller = new IndexController(recipeService);
@@ -47,7 +50,7 @@ public class IndexControllerTest {
     }
 
     @Test
-    public void getIndexPage() throws Exception{
+    public void getIndexPage() throws Exception {
 
         //given
         Set<Recipe> recipes = new HashSet<>();
@@ -55,6 +58,7 @@ public class IndexControllerTest {
 
         Recipe recipe = new Recipe();
         recipe.setId(1L);
+
         recipes.add(recipe);
 
         when(recipeService.getRecipes()).thenReturn(recipes);
@@ -64,12 +68,13 @@ public class IndexControllerTest {
         //when
         String viewName = controller.getIndexPage(model);
 
+
         //then
         assertEquals("index", viewName);
         verify(recipeService, times(1)).getRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertEquals(2, setInController.size());
-
     }
+
 }
